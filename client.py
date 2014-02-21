@@ -11,12 +11,15 @@ def message_handling():
 
     """
     This is the main process which send article content to the workers.
-    When ever worker become ready after some initialization time, it send a 
-    message to the client, then this process start by sending ten (configurable number) 
-    messages of article data. The worker process start working and if 
-    it processed five articles, then an acknologment has been provided 
-    by worker in respond to that client sends five more to the worker socket.
-    By which we are maintaining a stable and rush free client server communication.
+    Worker module takes some for initialization of coreNLP module after 
+    starting. After initialization it sends a ack message to the client. 
+    The client starts pushing ten (configurable number) messages of 
+    article data to the worker queue. In the worker module a poller 
+    detect messages and pull data from queue and process with coreNLP
+    After processing five messages an ack has been provided by worker 
+    in respond to that client sends five more to the worker queue.
+    By which we are maintaining a stable and rush free client worker 
+    communication.
     """
     #Reading JSON dump
     json_data=open('article_dump.json')
@@ -58,7 +61,7 @@ def message_handling():
             #print 'poll breaks'
             control_data = control.recv()
             if control_data == "TRANSMIT":
-                #print "control recieved"
+                print "control recieved"
                 if START == True :
                     message_transmit(10)
                     START = False
@@ -90,7 +93,7 @@ def logger():
         if central_logger in socks and socks[central_logger] == zmq.POLLIN:
 
             log_message = central_logger.recv()
-            #print log_message
+            print log_message
             logging.info(log_message)
     
 if __name__ == '__main__':    
