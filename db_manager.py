@@ -32,13 +32,13 @@ def db_write(db_message):
 	write_to_db = {"Article_id":db_message["id"],"corenlp_output":parsed_dict ,"date": datetime.datetime.utcnow()}
 	article_id = articles.insert(write_to_db)
 	log_message = "Article id:" + str(db_message["id"]) + " processed with corenlp at time: " + str(datetime.datetime.utcnow())
-	#print log_message
+	print log_message
 	logger.send(log_message)
 
 
 
 if __name__ == '__main__':
-	#pool = Pool(processes=5)    
+	#pool = Pool(processes=5)  
 	while True:
 		socks = dict(poller.poll())
 	  	if db_data in socks and socks[db_data] == zmq.POLLIN:
