@@ -1,4 +1,3 @@
-
 import time
 import sys
 import zmq
@@ -42,7 +41,7 @@ def message_handling(message):
 		result  = corenlp.raw_parse(message['description'])
 	
 	db_data = { "id" : message['id'] , "result" : result }
-	#print message['id']
+	print message['id']
 	db_message.send_json(db_data)
 
 def transmit_req():
